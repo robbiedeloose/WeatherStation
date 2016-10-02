@@ -1,7 +1,7 @@
 /*
-Code for a slave arduino who will collect the wind data for weather station 
-Based on: NMEA Wind Instrument by Tom Kuehn
-Uses the peet bros ananometer
+  Code for a slave arduino who will collect the wind data for weather station
+  Based on: NMEA Wind Instrument by Tom Kuehn
+  Uses the peet bros ananometer
 */
 
 #include <Wire.h>
@@ -16,29 +16,38 @@ void setup()
 
 void loop()
 {
-delay(2000);
- 
+  delay(2000);
+
   Wire.requestFrom(2, 4);    // request 4 bytes from slave device #2
 
 
-byte a,b,c,d;
-  
+  byte a, b, c, d;
+
   a = Wire.read();
   b = Wire.read();
   c = Wire.read();
   d = Wire.read();
- 
+
   windRichting = a;
   windRichting = windRichting << 8 | b;
-  
-  windSnelheid = a;
-  windSnelheid = windSnelheid << 8 | b;
- 
+  Serial.print("Graden: ");
   Serial.print(windRichting);
-  Serial.print("\n");
-  Serial.print(windSnelheid);
-  Serial.print("\n");
+  Serial.println("*");
+  windSnelheid = c;
+  windSnelheid = windSnelheid << 8 | d;
+  float WSH = windSnelheid;
+  WSH = WSH / 100;
+  Serial.print("Snelheid: ");
+  Serial.print(WSH);
+  Serial.println("Kn");
 
-  
+  //Serial.println(a);
+  //Serial.println(b);
+  //Serial.println(c);
+  //Serial.println(d);
+
+
+
+
   delay(500);
 }
